@@ -1,0 +1,832 @@
+<!DOCTYPE html>
+<html lang="es-MX">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>ALITAS LA PRESA — Crujientes, jugosas y llenas de sabor</title>
+<meta name="description" content="ALITAS LA PRESA. Alitas crujientes y jugosas. Pide por WhatsApp.">
+
+<!-- Tipografías: Anton para impacto tipo brasa/rancho, Sora para lectura limpia -->
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Anton&family=Sora:wght@400;500;600;700&display=swap" rel="stylesheet">
+
+<style>
+  /* ============================================================
+     TOKENS — paleta y escala tipográfica
+     Carbón: fondo principal. Madera: superficies/tarjetas.
+     Cobre: acento cálido. Verde: único uso reservado a WhatsApp.
+     ============================================================ */
+  :root{
+    --carbon-950: #14100e;
+    --carbon-900: #1b1613;
+    --carbon-800: #241d19;
+    --wood-800:   #3a2a1f;
+    --wood-700:   #4a3527;
+    --copper-500: #c9884f;
+    --copper-300: #e0ac74;
+    --cream-100:  #f3e8da;
+    --cream-200:  #d9c9b3;
+    --whats-500:  #22c55e;
+    --whats-600:  #16a34a;
+
+    --font-display: "Anton", "Arial Narrow", sans-serif;
+    --font-body: "Sora", system-ui, -apple-system, sans-serif;
+
+    --radius-lg: 22px;
+    --radius-md: 14px;
+    --radius-sm: 8px;
+
+    --shadow-soft: 0 20px 45px -20px rgba(0,0,0,0.6);
+    --shadow-lift: 0 12px 30px -12px rgba(0,0,0,0.55);
+
+    --ease: cubic-bezier(.2,.7,.2,1);
+  }
+
+  *{ box-sizing: border-box; margin:0; padding:0; }
+
+  html{ scroll-behavior: smooth; }
+
+  body{
+    background: var(--carbon-950);
+    color: var(--cream-100);
+    font-family: var(--font-body);
+    line-height: 1.55;
+    -webkit-font-smoothing: antialiased;
+    overflow-x: hidden;
+  }
+
+  img{ max-width:100%; display:block; }
+  a{ color: inherit; text-decoration:none; }
+  ul{ list-style:none; }
+
+  /* Respeta reduce-motion */
+  @media (prefers-reduced-motion: reduce){
+    *{ animation-duration: 0.001ms !important; transition-duration: 0.001ms !important; scroll-behavior:auto !important; }
+  }
+
+  :focus-visible{
+    outline: 2px solid var(--copper-300);
+    outline-offset: 3px;
+    border-radius: 4px;
+  }
+
+  .section-pad{ padding: 96px 6vw; }
+  .eyebrow{
+    font-family: var(--font-display);
+    letter-spacing: .18em;
+    text-transform: uppercase;
+    color: var(--copper-500);
+    font-size: .78rem;
+  }
+  .section-title{
+    font-family: var(--font-display);
+    font-weight: 400;
+    letter-spacing: .01em;
+    text-transform: uppercase;
+    font-size: clamp(2rem, 4vw, 3.1rem);
+    color: var(--cream-100);
+    margin-top: 8px;
+  }
+  .section-lede{
+    max-width: 46ch;
+    color: var(--cream-200);
+    margin-top: 14px;
+    font-size: 1rem;
+  }
+
+  /* ============================================================
+     TEXTURA — capa sutil de "veta de madera / concreto"
+     generada con gradientes repetidos, sin imágenes externas
+     ============================================================ */
+  .texture{
+    position: fixed;
+    inset: 0;
+    pointer-events: none;
+    z-index: 0;
+    opacity: .5;
+    background:
+      repeating-linear-gradient(115deg, rgba(255,255,255,0.015) 0px, rgba(255,255,255,0.015) 1px, transparent 1px, transparent 7px),
+      radial-gradient(ellipse at 20% 10%, rgba(201,136,79,0.06), transparent 55%),
+      radial-gradient(ellipse at 85% 90%, rgba(201,136,79,0.05), transparent 50%);
+  }
+
+  /* ============================================================
+     NAV
+     ============================================================ */
+  header.nav{
+    position: sticky;
+    top: 0;
+    z-index: 50;
+    display:flex;
+    align-items:center;
+    justify-content:space-between;
+    padding: 20px 6vw;
+    background: rgba(20,16,14,0.86);
+    backdrop-filter: blur(10px);
+    border-bottom: 1px solid rgba(201,136,79,0.16);
+  }
+  .brand{
+    font-family: var(--font-display);
+    font-size: 1.25rem;
+    letter-spacing: .06em;
+    text-transform: uppercase;
+    display:flex;
+    align-items:center;
+    gap:10px;
+  }
+  .brand .ember{
+    width:9px; height:9px; border-radius:50%;
+    background: var(--copper-300);
+    box-shadow: 0 0 12px 3px rgba(224,172,116,.6);
+  }
+  nav.links{ display:flex; gap: 32px; font-size:.92rem; color: var(--cream-200);}
+  nav.links a{ position:relative; padding: 4px 0; transition: color .25s var(--ease); }
+  nav.links a::after{
+    content:""; position:absolute; left:0; bottom:-2px; height:1px; width:0%;
+    background: var(--copper-500); transition: width .3s var(--ease);
+  }
+  nav.links a:hover{ color: var(--cream-100); }
+  nav.links a:hover::after{ width:100%; }
+  .nav-cta{
+    display:none;
+  }
+  .burger{ display:none; }
+
+  /* ============================================================
+     BOTÓN WHATSAPP — único acento verde de todo el sitio
+     ============================================================ */
+  .btn-whats{
+    display:inline-flex;
+    align-items:center;
+    gap:12px;
+    background: var(--whats-500);
+    color: #0c1c12;
+    font-weight:700;
+    font-size: 1.02rem;
+    padding: 17px 30px;
+    border-radius: 100px;
+    box-shadow: 0 14px 30px -10px rgba(34,197,94,.45);
+    transition: transform .28s var(--ease), box-shadow .28s var(--ease), background .28s var(--ease);
+    border: none;
+    cursor:pointer;
+  }
+  .btn-whats:hover{
+    background: var(--whats-600);
+    transform: translateY(-3px);
+    box-shadow: 0 20px 38px -10px rgba(34,197,94,.55);
+  }
+  .btn-whats svg{ width:22px; height:22px; flex-shrink:0; }
+
+  .btn-whats.small{ padding: 12px 20px; font-size:.9rem; }
+
+  /* ============================================================
+     HERO — layout horizontal (texto izq / imagen der)
+     ============================================================ */
+  .hero{
+    position:relative;
+    z-index:1;
+    min-height: 92vh;
+    display:grid;
+    grid-template-columns: 1.05fr 0.95fr;
+    align-items:center;
+    gap: 4vw;
+    padding: 0 6vw;
+  }
+  .hero-copy{
+    position:relative;
+    z-index:2;
+    padding-top: 40px;
+  }
+  .hero-copy .eyebrow{ display:flex; align-items:center; gap:10px; }
+  .hero-copy .eyebrow .line{ width:34px; height:1px; background: var(--copper-500); }
+
+  .hero h1{
+    font-family: var(--font-display);
+    font-weight:400;
+    text-transform: uppercase;
+    line-height: .92;
+    letter-spacing: .01em;
+    font-size: clamp(3.2rem, 8vw, 6.6rem);
+    margin: 18px 0 6px;
+    color: var(--cream-100);
+  }
+  .hero h1 span{
+    color: transparent;
+    -webkit-text-stroke: 1.5px var(--copper-300);
+  }
+  .hero .subtitle{
+    font-size: clamp(1.05rem, 1.6vw, 1.35rem);
+    color: var(--cream-200);
+    max-width: 40ch;
+    margin-bottom: 38px;
+  }
+  .hero-actions{ display:flex; align-items:center; gap:22px; flex-wrap:wrap; }
+  .hero-note{ font-size:.85rem; color: var(--cream-200); opacity:.75; }
+
+  .hero-visual{
+    position:relative;
+    height: 78vh;
+    max-height: 640px;
+    border-radius: var(--radius-lg);
+    overflow:hidden;
+    box-shadow: var(--shadow-soft);
+  }
+  .hero-visual img{
+    width:100%; height:100%; object-fit:cover;
+    transform: scale(1.02);
+    transition: transform 1.4s var(--ease);
+  }
+  .hero-visual:hover img{ transform: scale(1.07); }
+  .hero-visual::after{
+    content:"";
+    position:absolute; inset:0;
+    background: linear-gradient(180deg, rgba(20,16,14,0) 40%, rgba(20,16,14,.55) 100%),
+                linear-gradient(90deg, rgba(20,16,14,.35) 0%, transparent 30%);
+  }
+  .hero-visual .tag{
+    position:absolute;
+    left:22px; bottom:22px;
+    z-index:2;
+    background: rgba(20,16,14,.7);
+    border: 1px solid rgba(224,172,116,.35);
+    backdrop-filter: blur(6px);
+    padding: 10px 16px;
+    border-radius: 100px;
+    font-size:.8rem;
+    letter-spacing:.04em;
+    color: var(--copper-300);
+  }
+
+  .scroll-hint{
+    position:absolute;
+    bottom: 26px; left: 6vw;
+    display:flex; align-items:center; gap:10px;
+    font-size:.75rem; letter-spacing:.14em; text-transform:uppercase;
+    color: var(--cream-200); opacity:.6;
+  }
+  .scroll-hint .bar{ width:1px; height:26px; background: var(--copper-500); position:relative; overflow:hidden; }
+  .scroll-hint .bar::after{
+    content:""; position:absolute; top:-100%; left:0; width:100%; height:100%;
+    background: var(--copper-300);
+    animation: pour 1.8s infinite var(--ease);
+  }
+  @keyframes pour{ to{ top:100%; } }
+
+  /* ============================================================
+     SABORES
+     ============================================================ */
+  .flavors{ position:relative; z-index:1; background: var(--carbon-900); border-top:1px solid rgba(201,136,79,.12); border-bottom:1px solid rgba(201,136,79,.12); }
+  .flavor-grid{
+    margin-top: 48px;
+    display:grid;
+    grid-template-columns: repeat(4, 1fr);
+    gap: 20px;
+  }
+  .flavor-card{
+    background: linear-gradient(165deg, var(--wood-800), var(--carbon-800));
+    border: 1px solid rgba(224,172,116,.14);
+    border-radius: var(--radius-md);
+    padding: 30px 22px;
+    transition: transform .3s var(--ease), border-color .3s var(--ease), background .3s var(--ease);
+  }
+  .flavor-card:hover{
+    transform: translateY(-6px);
+    border-color: rgba(224,172,116,.4);
+    background: linear-gradient(165deg, var(--wood-700), var(--carbon-800));
+  }
+  .flavor-icon{
+    width:42px; height:42px;
+    display:flex; align-items:center; justify-content:center;
+    color: var(--copper-300);
+    margin-bottom: 20px;
+  }
+  .flavor-icon svg{ width:100%; height:100%; }
+  .flavor-card h3{
+    font-family: var(--font-display);
+    font-weight:400;
+    text-transform:uppercase;
+    letter-spacing:.03em;
+    font-size:1.2rem;
+    margin-bottom:8px;
+  }
+  .flavor-card p{ font-size:.88rem; color: var(--cream-200); }
+
+  /* ============================================================
+     MENÚ
+     ============================================================ */
+  .menu-wrap{
+    margin-top: 48px;
+    display:grid;
+    grid-template-columns: repeat(2, 1fr);
+    gap: 0 60px;
+  }
+  .menu-row{
+    display:flex;
+    justify-content:space-between;
+    align-items:baseline;
+    gap: 20px;
+    padding: 22px 0;
+    border-bottom: 1px solid rgba(224,172,116,.16);
+  }
+  .menu-row:last-child{ border-bottom:none; }
+  .menu-name{ font-size:1.05rem; color: var(--cream-100); font-weight:600; }
+  .menu-desc{ display:block; font-size:.82rem; color: var(--cream-200); opacity:.7; margin-top:3px; font-weight:400; }
+  .menu-dots{ flex:1; border-bottom: 1px dotted rgba(224,172,116,.3); position:relative; top:-6px; margin: 0 6px; }
+  .menu-price{
+    font-family: var(--font-display);
+    font-weight:400;
+    font-size:1.3rem;
+    color: var(--copper-300);
+    white-space:nowrap;
+  }
+
+  /* ============================================================
+     GALERÍA
+     ============================================================ */
+  .gallery{ position:relative; z-index:1; background: var(--carbon-900); border-top:1px solid rgba(201,136,79,.12); border-bottom:1px solid rgba(201,136,79,.12); }
+  .gallery-grid{
+    margin-top: 48px;
+    display:grid;
+    grid-template-columns: 1.2fr 1fr 1fr;
+    gap: 18px;
+    height: 460px;
+  }
+  .gallery-grid figure{
+    position:relative;
+    border-radius: var(--radius-md);
+    overflow:hidden;
+    height:100%;
+    box-shadow: var(--shadow-lift);
+  }
+  .gallery-grid img{
+    width:100%; height:100%; object-fit:cover;
+    filter: saturate(1.02) contrast(1.03);
+    transition: transform .6s var(--ease), filter .6s var(--ease);
+  }
+  .gallery-grid figure:hover img{ transform: scale(1.08); filter: saturate(1.15) contrast(1.05); }
+  .gallery-grid figcaption{
+    position:absolute; left:16px; bottom:14px;
+    font-size:.78rem; letter-spacing:.06em; text-transform:uppercase;
+    color: var(--cream-100);
+    background: rgba(20,16,14,.55);
+    padding: 6px 12px;
+    border-radius: 100px;
+    backdrop-filter: blur(4px);
+  }
+
+  /* ============================================================
+     UBICACIÓN + HORARIO
+     ============================================================ */
+  .info-split{
+    position:relative; z-index:1;
+    display:grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 4vw;
+    align-items:start;
+  }
+  .info-block h3{
+    font-family: var(--font-display);
+    text-transform:uppercase;
+    font-weight:400;
+    font-size:1.5rem;
+    color: var(--cream-100);
+    margin-bottom: 14px;
+  }
+  .address-line{
+    font-size:1.05rem;
+    color: var(--copper-300);
+    border: 1px dashed rgba(224,172,116,.4);
+    border-radius: var(--radius-sm);
+    padding: 16px 18px;
+    display:inline-block;
+    margin-bottom: 22px;
+  }
+  .map-placeholder{
+    width:100%;
+    aspect-ratio: 16/10;
+    border-radius: var(--radius-md);
+    border: 1px solid rgba(224,172,116,.18);
+    background:
+      repeating-linear-gradient(45deg, rgba(224,172,116,0.04) 0 2px, transparent 2px 14px),
+      var(--carbon-800);
+    display:flex;
+    flex-direction:column;
+    align-items:center;
+    justify-content:center;
+    gap: 8px;
+    color: var(--cream-200);
+    font-size:.85rem;
+    text-align:center;
+    padding: 20px;
+  }
+  .map-placeholder strong{ color: var(--copper-300); font-family: var(--font-display); font-weight:400; letter-spacing:.03em; font-size:1rem; text-transform:uppercase; }
+  /* Contenedor listo para <iframe> de Google Maps: */
+  #google-maps-embed{ width:100%; height:100%; }
+
+  .schedule-card{
+    background: linear-gradient(165deg, var(--wood-800), var(--carbon-800));
+    border: 1px solid rgba(224,172,116,.16);
+    border-radius: var(--radius-lg);
+    padding: 34px;
+  }
+  .schedule-row{
+    display:flex;
+    justify-content:space-between;
+    padding: 16px 0;
+    border-bottom: 1px solid rgba(224,172,116,.14);
+    font-size:1rem;
+  }
+  .schedule-row:last-child{ border-bottom:none; }
+  .schedule-row .days{ color: var(--cream-100); font-weight:600; }
+  .schedule-row .hours{ color: var(--copper-300); font-family: var(--font-display); letter-spacing:.02em; }
+  .status-pill{
+    display:inline-flex; align-items:center; gap:8px;
+    margin-top: 20px;
+    font-size:.8rem; color: var(--cream-200);
+  }
+  .status-dot{ width:8px; height:8px; border-radius:50%; background: var(--whats-500); box-shadow: 0 0 10px 2px rgba(34,197,94,.5); }
+
+  /* ============================================================
+     CTA final
+     ============================================================ */
+  .cta-final{
+    position:relative; z-index:1;
+    text-align:center;
+    padding: 100px 6vw;
+    background: radial-gradient(ellipse at 50% 0%, rgba(201,136,79,.1), transparent 60%), var(--carbon-950);
+  }
+  .cta-final h2{
+    font-family: var(--font-display);
+    text-transform:uppercase;
+    font-weight:400;
+    font-size: clamp(2rem, 5vw, 3.4rem);
+    margin-bottom: 26px;
+  }
+
+  /* ============================================================
+     FOOTER
+     ============================================================ */
+  footer{
+    position:relative; z-index:1;
+    background: var(--carbon-900);
+    border-top: 1px solid rgba(201,136,79,.16);
+    padding: 50px 6vw 34px;
+    display:flex;
+    justify-content:space-between;
+    align-items:center;
+    flex-wrap:wrap;
+    gap: 24px;
+  }
+  .footer-brand{
+    font-family: var(--font-display);
+    text-transform:uppercase;
+    font-size:1.1rem;
+    letter-spacing:.05em;
+  }
+  .footer-thanks{ font-size:.85rem; color: var(--cream-200); margin-top:6px; opacity:.75; }
+  .social-links{ display:flex; gap:14px; }
+  .social-links a{
+    width:42px; height:42px;
+    border-radius:50%;
+    border: 1px solid rgba(224,172,116,.28);
+    display:flex; align-items:center; justify-content:center;
+    color: var(--copper-300);
+    transition: background .25s var(--ease), transform .25s var(--ease), border-color .25s var(--ease);
+  }
+  .social-links a:hover{ background: var(--copper-500); color: var(--carbon-950); transform: translateY(-3px); border-color: var(--copper-500); }
+  .social-links svg{ width:18px; height:18px; }
+  .footer-copy{ width:100%; text-align:center; font-size:.75rem; color: var(--cream-200); opacity:.5; padding-top: 26px; border-top: 1px solid rgba(224,172,116,.08); }
+
+  /* Botón flotante WhatsApp (móvil) */
+  .float-whats{
+    position:fixed;
+    right: 22px; bottom: 22px;
+    z-index: 60;
+    width: 60px; height:60px;
+    border-radius:50%;
+    background: var(--whats-500);
+    display:flex; align-items:center; justify-content:center;
+    box-shadow: 0 10px 26px -6px rgba(34,197,94,.55);
+    transition: transform .25s var(--ease);
+  }
+  .float-whats:hover{ transform: scale(1.08); }
+  .float-whats svg{ width:28px; height:28px; color:#0c1c12; }
+
+  /* ============================================================
+     RESPONSIVE — quiebre principal a tablet/móvil
+     ============================================================ */
+  @media (max-width: 980px){
+    .section-pad{ padding: 72px 6vw; }
+    .hero{ grid-template-columns: 1fr; min-height:auto; padding-top: 40px; padding-bottom: 60px; gap: 40px; }
+    .hero-visual{ height: 52vh; order:-1; }
+    .hero-copy{ padding-top:0; }
+    .scroll-hint{ display:none; }
+    .flavor-grid{ grid-template-columns: repeat(2, 1fr); }
+    .menu-wrap{ grid-template-columns: 1fr; gap:0; }
+    .gallery-grid{ grid-template-columns: 1fr 1fr; height:auto; }
+    .gallery-grid figure{ height: 220px; }
+    .gallery-grid figure:first-child{ grid-column: span 2; height: 260px; }
+    .info-split{ grid-template-columns: 1fr; gap: 50px; }
+    nav.links{ display:none; }
+  }
+
+  @media (max-width: 560px){
+    .flavor-grid{ grid-template-columns: 1fr; }
+    .gallery-grid{ grid-template-columns: 1fr; }
+    .gallery-grid figure:first-child{ grid-column: span 1; }
+    footer{ flex-direction:column; align-items:flex-start; }
+    .btn-whats{ width:100%; justify-content:center; }
+    .hero-actions{ flex-direction:column; align-items:flex-start; width:100%; }
+  }
+</style>
+</head>
+<body>
+
+<!-- Capa de textura ambiental fija -->
+<div class="texture" aria-hidden="true"></div>
+
+<!-- ============================================================
+     NAVEGACIÓN
+     ============================================================ -->
+<header class="nav">
+  <div class="brand"><span class="ember"></span> Alitas La Presa</div>
+  <nav class="links">
+    <a href="#sabores">Sabores</a>
+    <a href="#menu">Menú</a>
+    <a href="#galeria">Galería</a>
+    <a href="#ubicacion">Ubicación</a>
+    <a href="#horario">Horario</a>
+  </nav>
+</header>
+
+<!-- ============================================================
+     1. HERO PRINCIPAL
+     ============================================================ -->
+<section class="hero" id="inicio">
+  <div class="hero-copy">
+    <p class="eyebrow"><span class="line"></span> Rancho de sabor, al carbón</p>
+    <h1>Alitas <span>La Presa</span></h1>
+    <p class="subtitle">Crujientes, jugosas y llenas de sabor.</p>
+    <div class="hero-actions">
+      <!-- Reemplaza el número por el de tu negocio -->
+      <a class="btn-whats" href="https://wa.me/521000000000?text=Hola%2C%20quiero%20hacer%20un%20pedido%20de%20Alitas%20La%20Presa"
+         target="_blank" rel="noopener">
+        <svg viewBox="0 0 24 24" fill="currentColor"><path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.472-.148-.67.15-.198.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347z"/><path d="M12.001 2C6.478 2 2 6.477 2 12c0 1.892.526 3.66 1.44 5.167L2 22l4.955-1.396A9.945 9.945 0 0 0 12.001 22C17.524 22 22 17.523 22 12S17.524 2 12.001 2zm0 18.09c-1.688 0-3.26-.494-4.583-1.345l-.328-.207-2.94.828.847-2.868-.216-.34A8.07 8.07 0 0 1 3.91 12c0-4.465 3.63-8.09 8.091-8.09 4.462 0 8.09 3.625 8.09 8.09 0 4.465-3.628 8.09-8.09 8.09z"/></svg>
+        Pedir por WhatsApp
+      </a>
+      <span class="hero-note">Servicio para llevar y domicilio</span>
+    </div>
+  </div>
+
+  <div class="hero-visual">
+    <!-- Reemplaza esta imagen con la fotografía real del producto -->
+    <img src="https://images.unsplash.com/photo-1608039755401-742074f0548d?q=80&w=1200&auto=format&fit=crop"
+         alt="Orden de alitas crujientes recién preparadas">
+    <span class="tag">🔥 Al carbón, todos los días</span>
+  </div>
+
+  <div class="scroll-hint" aria-hidden="true"><div class="bar"></div> Desliza</div>
+</section>
+
+<!-- ============================================================
+     2. SABORES
+     ============================================================ -->
+<section class="flavors section-pad" id="sabores">
+  <p class="eyebrow">Nuestros sabores</p>
+  <h2 class="section-title">Elige tu combinación</h2>
+  <p class="section-lede">Cuatro salsas preparadas en casa, del clásico ahumado al toque frutal picoso.</p>
+
+  <div class="flavor-grid">
+    <article class="flavor-card">
+      <div class="flavor-icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.4"><path d="M4 15c2-6 6-10 8-11 2 1 6 5 8 11-2 4-6 7-8 7s-6-3-8-7z"/><path d="M12 6c1 2 1 4 0 6"/></svg></div>
+      <h3>BBQ</h3>
+      <p>Dulce, ahumada y con cuerpo. La favorita de siempre.</p>
+    </article>
+    <article class="flavor-card">
+      <div class="flavor-icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.4"><path d="M12 3c3 3 6 6 6 10a6 6 0 1 1-12 0c0-4 3-7 6-10z"/></svg></div>
+      <h3>Búfalo</h3>
+      <p>Picante clásica, ácida y con mantequilla. Directa al grano.</p>
+    </article>
+    <article class="flavor-card">
+      <div class="flavor-icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.4"><circle cx="12" cy="13" r="7"/><path d="M12 6c1-2 1-3 0-4"/></svg></div>
+      <h3>Mango Habanero</h3>
+      <p>Dulzura tropical con un golpe de picor que se queda.</p>
+    </article>
+    <article class="flavor-card">
+      <div class="flavor-icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.4"><path d="M12 3v3M12 18v3M4.2 4.2l2.1 2.1M17.7 17.7l2.1 2.1M3 12h3M18 12h3M4.2 19.8l2.1-2.1M17.7 6.3l2.1-2.1"/><circle cx="12" cy="12" r="4"/></svg></div>
+      <h3>Tamarindo</h3>
+      <p>Agridulce y profunda, con ese toque de rancho que la hace única.</p>
+    </article>
+  </div>
+</section>
+
+<!-- ============================================================
+     3. MENÚ
+     ============================================================ -->
+<section class="menu section-pad" id="menu">
+  <p class="eyebrow">Menú</p>
+  <h2 class="section-title">Precios claros, sin sorpresas</h2>
+
+  <div class="menu-wrap">
+    <div class="menu-row">
+      <div>
+        <span class="menu-name">Orden personal</span>
+        <span class="menu-desc">6 piezas · elige tu salsa</span>
+      </div>
+      <span class="menu-dots"></span>
+      <span class="menu-price">$60</span>
+    </div>
+    <div class="menu-row">
+      <div>
+        <span class="menu-name">Orden completa</span>
+        <span class="menu-desc">12 piezas · para compartir</span>
+      </div>
+      <span class="menu-dots"></span>
+      <span class="menu-price">$110</span>
+    </div>
+    <div class="menu-row">
+      <div>
+        <span class="menu-name">Refresco lata</span>
+        <span class="menu-desc">355 ml</span>
+      </div>
+      <span class="menu-dots"></span>
+      <span class="menu-price">$25</span>
+    </div>
+    <div class="menu-row">
+      <div>
+        <span class="menu-name">Agua natural</span>
+        <span class="menu-desc">500 ml</span>
+      </div>
+      <span class="menu-dots"></span>
+      <span class="menu-price">$15</span>
+    </div>
+  </div>
+</section>
+
+<!-- ============================================================
+     4. GALERÍA
+     ============================================================ -->
+<section class="gallery section-pad" id="galeria">
+  <p class="eyebrow">Galería</p>
+  <h2 class="section-title">Del carbón a tu mesa</h2>
+
+  <div class="gallery-grid">
+    <figure>
+      <img src="https://images.unsplash.com/photo-1567620832903-9fc6debc209f?q=80&w=1000&auto=format&fit=crop" alt="Alitas bañadas en salsa BBQ estilo rústico">
+      <figcaption>BBQ rústica</figcaption>
+    </figure>
+    <figure>
+      <img src="https://images.unsplash.com/photo-1585109649139-366815a0d713?q=80&w=800&auto=format&fit=crop" alt="Alitas picantes estilo búfalo servidas en tabla de madera">
+      <figcaption>Búfalo clásica</figcaption>
+    </figure>
+    <figure>
+      <img src="https://images.unsplash.com/photo-1600628421055-4d30de868b8f?q=80&w=800&auto=format&fit=crop" alt="Detalle gourmet de alitas doradas y crujientes">
+      <figcaption>Detalle gourmet</figcaption>
+    </figure>
+  </div>
+</section>
+
+<!-- ============================================================
+     5. UBICACIÓN  +  6. HORARIO
+     ============================================================ -->
+<section class="section-pad" id="ubicacion">
+  <div class="info-split">
+    <div class="info-block">
+      <p class="eyebrow">Ubicación</p>
+      <h3>Encuéntranos aquí</h3>
+      <span class="address-line">📍 Agrega aquí tu dirección</span>
+
+      <!-- Contenedor listo para insertar el iframe de Google Maps más adelante -->
+      <div class="map-placeholder" id="google-maps-embed">
+        <strong>Mapa próximamente</strong>
+        <span>Sustituye este bloque por el &lt;iframe&gt; de Google Maps con la ubicación del local.</span>
+      </div>
+    </div>
+
+    <div class="info-block" id="horario">
+      <p class="eyebrow">Horario</p>
+      <h3>Abierto todos los días</h3>
+      <div class="schedule-card">
+        <div class="schedule-row">
+          <span class="days">Lunes a domingo</span>
+          <span class="hours">4:00 PM – 11:00 PM</span>
+        </div>
+        <div class="status-pill">
+          <span class="status-dot" id="status-dot"></span>
+          <span id="status-text">Calculando estado...</span>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ============================================================
+     CTA FINAL
+     ============================================================ -->
+<section class="cta-final">
+  <h2>¿Ya se te antojó?</h2>
+  <a class="btn-whats" href="https://wa.me/521000000000?text=Hola%2C%20quiero%20hacer%20un%20pedido%20de%20Alitas%20La%20Presa"
+     target="_blank" rel="noopener">
+    <svg viewBox="0 0 24 24" fill="currentColor"><path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.472-.148-.67.15-.198.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347z"/><path d="M12.001 2C6.478 2 2 6.477 2 12c0 1.892.526 3.66 1.44 5.167L2 22l4.955-1.396A9.945 9.945 0 0 0 12.001 22C17.524 22 22 17.523 22 12S17.524 2 12.001 2zm0 18.09c-1.688 0-3.26-.494-4.583-1.345l-.328-.207-2.94.828.847-2.868-.216-.34A8.07 8.07 0 0 1 3.91 12c0-4.465 3.63-8.09 8.091-8.09 4.462 0 8.09 3.625 8.09 8.09 0 4.465-3.628 8.09-8.09 8.09z"/></svg>
+    Pedir por WhatsApp
+  </a>
+</section>
+
+<!-- ============================================================
+     7. FOOTER
+     ============================================================ -->
+<footer>
+  <div>
+    <div class="footer-brand">Alitas La Presa</div>
+    <p class="footer-thanks">Gracias por su preferencia.</p>
+  </div>
+
+  <div class="social-links">
+    <!-- Reemplaza los href por los perfiles reales del negocio -->
+    <a href="#" aria-label="Facebook" target="_blank" rel="noopener">
+      <svg viewBox="0 0 24 24" fill="currentColor"><path d="M22 12.06C22 6.5 17.52 2 12 2S2 6.5 2 12.06c0 5 3.66 9.15 8.44 9.94v-7.03H7.9v-2.9h2.54V9.85c0-2.5 1.49-3.89 3.78-3.89 1.1 0 2.24.2 2.24.2v2.46h-1.26c-1.24 0-1.63.77-1.63 1.56v1.88h2.78l-.44 2.9h-2.34V22c4.78-.79 8.44-4.94 8.44-9.94z"/></svg>
+    </a>
+    <a href="#" aria-label="Instagram" target="_blank" rel="noopener">
+      <svg viewBox="0 0 24 24" fill="currentColor"><path d="M12 2c2.72 0 3.06.01 4.12.06 1.06.05 1.79.22 2.43.47.66.26 1.22.6 1.77 1.15.55.55.89 1.11 1.15 1.77.25.64.42 1.37.47 2.43.05 1.06.06 1.4.06 4.12s-.01 3.06-.06 4.12c-.05 1.06-.22 1.79-.47 2.43a4.9 4.9 0 0 1-1.15 1.77 4.9 4.9 0 0 1-1.77 1.15c-.64.25-1.37.42-2.43.47-1.06.05-1.4.06-4.12.06s-3.06-.01-4.12-.06c-1.06-.05-1.79-.22-2.43-.47a4.9 4.9 0 0 1-1.77-1.15 4.9 4.9 0 0 1-1.15-1.77c-.25-.64-.42-1.37-.47-2.43C2.01 15.06 2 14.72 2 12s.01-3.06.06-4.12c.05-1.06.22-1.79.47-2.43.26-.66.6-1.22 1.15-1.77A4.9 4.9 0 0 1 5.45.53C6.09.28 6.82.11 7.88.06 8.94.01 9.28 0 12 0zm0 5a5 5 0 1 0 0 10 5 5 0 0 0 0-10zm0 8.25A3.25 3.25 0 1 1 12 6.75a3.25 3.25 0 0 1 0 6.5zM17.65 4.85a1.17 1.17 0 1 0 0 2.34 1.17 1.17 0 0 0 0-2.34z"/></svg>
+    </a>
+    <a href="#" aria-label="TikTok" target="_blank" rel="noopener">
+      <svg viewBox="0 0 24 24" fill="currentColor"><path d="M14.5 2h3.1c.2 1.6 1.1 3 2.6 3.8.9.5 1.9.7 2.8.7v3.2c-1.7 0-3.3-.5-4.7-1.4v6.7c0 3.6-2.9 6.5-6.5 6.5A6.5 6.5 0 0 1 5.3 15c0-3.5 2.8-6.4 6.3-6.5v3.3a3.2 3.2 0 1 0 3.2 3.2V2z"/></svg>
+    </a>
+  </div>
+
+  <p class="footer-copy">© <span id="year"></span> Alitas La Presa. Todos los derechos reservados.</p>
+</footer>
+
+<!-- Botón flotante de WhatsApp, visible al hacer scroll -->
+<a class="float-whats" id="floatWhats" href="https://wa.me/521000000000?text=Hola%2C%20quiero%20hacer%20un%20pedido%20de%20Alitas%20La%20Presa"
+   target="_blank" rel="noopener" aria-label="Pedir por WhatsApp" style="display:none;">
+  <svg viewBox="0 0 24 24" fill="currentColor"><path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.472-.148-.67.15-.198.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347z"/><path d="M12.001 2C6.478 2 2 6.477 2 12c0 1.892.526 3.66 1.44 5.167L2 22l4.955-1.396A9.945 9.945 0 0 0 12.001 22C17.524 22 22 17.523 22 12S17.524 2 12.001 2zm0 18.09c-1.688 0-3.26-.494-4.583-1.345l-.328-.207-2.94.828.847-2.868-.216-.34A8.07 8.07 0 0 1 3.91 12c0-4.465 3.63-8.09 8.091-8.09 4.462 0 8.09 3.625 8.09 8.09 0 4.465-3.628 8.09-8.09 8.09z"/></svg>
+</a>
+
+<script>
+  // ============================================================
+  // Año automático en el footer
+  // ============================================================
+  document.getElementById('year').textContent = new Date().getFullYear();
+
+  // ============================================================
+  // Botón flotante de WhatsApp: aparece después de bajar el hero
+  // ============================================================
+  const floatBtn = document.getElementById('floatWhats');
+  const heroEl = document.querySelector('.hero');
+  const observer = new IntersectionObserver((entries) => {
+    entries.forEach(entry => {
+      floatBtn.style.display = entry.isIntersecting ? 'none' : 'flex';
+    });
+  }, { threshold: 0.1 });
+  observer.observe(heroEl);
+
+  // ============================================================
+  // Estado abierto/cerrado en vivo según el horario configurado
+  // Horario: todos los días, 16:00 a 23:00 (hora local del navegador)
+  // ============================================================
+  function actualizarEstado(){
+    const ahora = new Date();
+    const hora = ahora.getHours() + ahora.getMinutes() / 60;
+    const abierto = hora >= 16 && hora < 23;
+
+    const dot = document.getElementById('status-dot');
+    const texto = document.getElementById('status-text');
+
+    if(abierto){
+      dot.style.background = '#22c55e';
+      dot.style.boxShadow = '0 0 10px 2px rgba(34,197,94,.5)';
+      texto.textContent = 'Abierto ahora · cerramos a las 11:00 PM';
+    } else {
+      dot.style.background = '#b0463f';
+      dot.style.boxShadow = '0 0 10px 2px rgba(176,70,63,.5)';
+      texto.textContent = 'Cerrado · abrimos hoy a las 4:00 PM';
+    }
+  }
+  actualizarEstado();
+  setInterval(actualizarEstado, 60000);
+
+  // ============================================================
+  // Revelado suave de secciones al hacer scroll
+  // ============================================================
+  const revealTargets = document.querySelectorAll('.flavor-card, .gallery-grid figure, .menu-row, .schedule-card, .map-placeholder');
+  revealTargets.forEach(el => {
+    el.style.opacity = '0';
+    el.style.transform = 'translateY(18px)';
+    el.style.transition = 'opacity .6s ease, transform .6s ease';
+  });
+  const revealObserver = new IntersectionObserver((entries) => {
+    entries.forEach(entry => {
+      if(entry.isIntersecting){
+        entry.target.style.opacity = '1';
+        entry.target.style.transform = 'translateY(0)';
+        revealObserver.unobserve(entry.target);
+      }
+    });
+  }, { threshold: 0.15 });
+  revealTargets.forEach(el => revealObserver.observe(el));
+</script>
+
+</body>
+</html>
